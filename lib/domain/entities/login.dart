@@ -1,135 +1,345 @@
 class LoginModel {
-  int? _status;
-  String? _message;
-  bool? _error;
-  Data? _data;
-
   LoginModel({
-    int? status,
+    num? status,
     String? message,
-    bool? error,
     Data? data,
+    String? error,
   }) {
     _status = status;
     _message = message;
-    _error = error;
     _data = data;
+    _error = error;
   }
 
   LoginModel.fromJson(dynamic json) {
-    _status = int.tryParse(json['status']?.toString() ?? "0");
+    _status = json['status'];
     _message = json['message'];
-    _error = json['error'];
-
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    _error = json['error'];
   }
 
-  int? get status => _status;
+  num? _status;
+  String? _message;
+  Data? _data;
+  String? _error;
+
+  num? get status => _status;
   String? get message => _message;
-  bool? get error => _error;
   Data? get data => _data;
+  String? get error => _error;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = _status;
     map['message'] = _message;
-    map['error'] = _error;
     if (_data != null) {
       map['data'] = _data?.toJson();
     }
+    map['error'] = _error;
     return map;
   }
 }
 
 class Data {
-  int? _id;
-  String? _firstName;
-  String? _lastName;
-  String? _email;
-  String? _phone;
-  String? _gender;
-
-  int? _documentVerify;
-  int? _verified;
-  int? _status;
-
-  int? _itemId;
-  int? _itemTypeId;
-
-  Data({
-    int? id,
-    String? firstName,
-    String? lastName,
-    String? email,
-    String? phone,
-    String? gender,
-    int? documentVerify,
-    int? verified,
-    int? status,
-    int? itemId,
-    int? itemTypeId,
-  }) {
+  Data(
+      {num? id,
+      String? fireStoreId,
+      String? firstName,
+      dynamic middle,
+      String? lastName,
+      String? email,
+      String? phone,
+      String? phoneCountry,
+      dynamic defaultCountry,
+      dynamic intro,
+      dynamic langauge,
+      dynamic country,
+      dynamic wallet,
+      String? otpValue,
+      String? token,
+      String? resetToken,
+      int? verified,
+      dynamic loginType,
+      String? birthdate,
+      dynamic socialId,
+      String? gender,
+      int? status,
+      String? createdAt,
+      String? updatedAt,
+      dynamic packageId,
+      dynamic fcm,
+      dynamic deviceId,
+      int? remainingItems,
+      Map<String, dynamic>? identityImage,
+      dynamic profileImage,
+      dynamic smsNotification,
+      dynamic emailNotification,
+      dynamic pushNotification,
+      dynamic firebaseAuth,
+      int? documentVerify,
+      int? itemId,
+      dynamic itemTypeId}) {
     _id = id;
+    _fireStoreId = fireStoreId;
     _firstName = firstName;
+    _middle = middle;
     _lastName = lastName;
+    _gender = gender;
     _email = email;
     _phone = phone;
-    _gender = gender;
-
-    _documentVerify = documentVerify;
+    _phoneCountry = phoneCountry;
+    _defaultCountry = defaultCountry;
+    _intro = intro;
+    _langauge = langauge;
+    _country = country;
+    _wallet = wallet;
+    _otpValue = otpValue;
+    _token = token;
+    _resetToken = resetToken;
     _verified = verified;
+    _loginType = loginType;
+    _birthdate = birthdate;
+    _socialId = socialId;
     _status = status;
-
+    _createdAt = createdAt;
+    _updatedAt = updatedAt;
+    _packageId = packageId;
+    _fcm = fcm;
+    _deviceId = deviceId;
+    _identityImage = identityImage;
+    _profileImage = profileImage;
+    _smsNotification = smsNotification;
+    _emailNotification = emailNotification;
+    _pushNotification = pushNotification;
+    _firebaseAuth = firebaseAuth;
+    _documentVerify = documentVerify;
     _itemId = itemId;
     _itemTypeId = itemTypeId;
   }
 
   Data.fromJson(dynamic json) {
-    _id = int.tryParse(json['id']?.toString() ?? "0");
+    _id = json['id'];
+    _fireStoreId = json["firestore_id"];
     _firstName = json['first_name'];
+    _middle = json['middle'];
     _lastName = json['last_name'];
     _email = json['email'];
     _phone = json['phone'];
+    _phoneCountry = json['phone_country'];
+    _defaultCountry = json['default_country'];
+    _intro = json['intro'];
+    _langauge = json['langauge'];
     _gender = json['gender'];
-
-    _documentVerify = int.tryParse(json['document_verify']?.toString() ?? "0");
-    _verified = int.tryParse(json['verified']?.toString() ?? "0");
-    _status = int.tryParse(json['status']?.toString() ?? "0");
-
-    _itemId = int.tryParse(json['item_id']?.toString() ?? "0");
-    _itemTypeId = int.tryParse(json['item_type_id']?.toString() ?? "0");
+    _country = json['country'];
+    _wallet = json['wallet'];
+    _otpValue = json['otp_value'];
+    _token = json['token'];
+    _resetToken = json['reset_token'];
+    _verified = json['verified'] ?? 0;
+    _loginType = json['login_type'];
+    _birthdate = json['birthdate'];
+    _socialId = json['social_id'];
+    _status = json['status'] ?? 0;
+    _createdAt = json['created_at'];
+    _updatedAt = json['updated_at'];
+    _packageId = json['package_id'];
+    _fcm = json['fcm'];
+    _deviceId = json['device_id'];
+    _identityImage = json['identity_image'] is Map<String, dynamic>
+        ? json['identity_image']
+        : null;
+    _profileImage = json['profile_image'];
+    _smsNotification = json['sms_notification'];
+    _emailNotification = json['email_notification'];
+    remainingItems = json['remaining_items'];
+    _pushNotification = json['push_notification'];
+    _firebaseAuth = json['firebase_auth'];
+    _documentVerify = json['document_verify'] ?? 0;
+    _itemId = json['item_id'];
+    _itemTypeId = json['item_type_id'];
   }
 
-  int? get id => _id;
+  num? _id;
+  String? _fireStoreId;
+  String? _firstName;
+  dynamic _middle;
+  String? _lastName;
+  String? _email;
+  String? _phone;
+  String? _phoneCountry;
+  dynamic _defaultCountry;
+  dynamic _intro;
+  dynamic _langauge;
+  String? _gender;
+  dynamic _country;
+  dynamic _wallet;
+  String? _otpValue;
+  String? _token;
+  String? _resetToken;
+  int? _verified;
+  dynamic _loginType;
+  String? _birthdate;
+  dynamic _socialId;
+  int? _status;
+  String? _createdAt;
+  String? _updatedAt;
+  dynamic _packageId;
+  dynamic _fcm;
+  dynamic _deviceId;
+  Map<String, dynamic>? _identityImage;
+  dynamic _profileImage;
+  dynamic _smsNotification;
+  dynamic _emailNotification;
+  int? _remainingItems;
+  int? remainingItems;
+  dynamic _pushNotification;
+  dynamic _firebaseAuth;
+  int? _documentVerify;
+  int? _itemId;
+  dynamic _itemTypeId;
+
+  num? get id => _id;
+  String? get fireStoreId => _fireStoreId;
   String? get firstName => _firstName;
+  dynamic get middle => _middle;
   String? get lastName => _lastName;
   String? get email => _email;
   String? get phone => _phone;
   String? get gender => _gender;
-
-  int? get documentVerify => _documentVerify;
+  String? get phoneCountry => _phoneCountry;
+  dynamic get defaultCountry => _defaultCountry;
+  dynamic get intro => _intro;
+  dynamic get langauge => _langauge;
+  dynamic get country => _country;
+  dynamic get wallet => _wallet;
+  String? get otpValue => _otpValue;
+  String? get token => _token;
+  String? get resetToken => _resetToken;
   int? get verified => _verified;
+  dynamic get loginType => _loginType;
+  String? get birthdate => _birthdate;
+  dynamic get socialId => _socialId;
   int? get status => _status;
-
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
+  dynamic get packageId => _packageId;
+  dynamic get fcm => _fcm;
+  dynamic get deviceId => _deviceId;
+  Map<String, dynamic>? get identityImage => _identityImage;
+  dynamic get profileImage => _profileImage;
+  dynamic get smsNotification => _smsNotification;
+  dynamic get emailNotification => _emailNotification;
+  dynamic get pushNotification => _pushNotification;
+  dynamic get firebaseAuth => _firebaseAuth;
+  int? get remainingItem => _remainingItems;
+  int? get documentVerify => _documentVerify;
   int? get itemId => _itemId;
-  int? get itemTypeId => _itemTypeId;
+  dynamic get itemTypeId => _itemTypeId;
+
+  set itemId(int? itemId) => _itemId = itemId;
+  set itemTypeId(dynamic itemTypeId) => _itemTypeId = itemTypeId;
+
+  set firstNameSetter(value) {
+    _firstName = value;
+  }
+
+  set remainingItemsSetter(value) {
+    _remainingItems = remainingItems;
+  }
+
+  set lastNameSetter(value) {
+    _lastName = value;
+  }
+
+  set gender(String? gender) => _gender = gender;
+
+  set birthdateSetter(value) {
+    _birthdate = value;
+  }
+
+  set profileImageSetter(value) {
+    _profileImage = {"url": value};
+  }
+
+  set languageSetter(value) {
+    _langauge = value;
+  }
+
+  set phoneNumberSetter(value) {
+    _phone = value;
+  }
+
+  set countryCodeSetter(value) {
+    _phoneCountry = value;
+  }
+
+  set introSetter(value) {
+    _intro = value;
+  }
+
+  set countrySetter(value) {
+    _country = value;
+  }
+
+  set identitySetter(value) {
+    _identityImage = {"url": value};
+  }
+
+  set emailNotiSetter(value) {
+    _emailNotification = value;
+  }
+
+  set smsNotiSetter(value) {
+    _smsNotification = value;
+  }
+
+  set pushNotiSetter(value) {
+    _pushNotification = value;
+  }
+
+  set firebaseAuthNotiSetter(value) {
+    _firebaseAuth = value;
+  }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map["firestore_id"] = _fireStoreId;
     map['first_name'] = _firstName;
+    map['middle'] = _middle;
     map['last_name'] = _lastName;
     map['email'] = _email;
     map['phone'] = _phone;
+    map['phone_country'] = _phoneCountry;
+    map['default_country'] = _defaultCountry;
+    map['intro'] = _intro;
+    map['langauge'] = _langauge;
+    map['country'] = _country;
+    map['wallet'] = _wallet;
+    map['otp_value'] = _otpValue;
     map['gender'] = _gender;
-
-    map['document_verify'] = _documentVerify;
+    map['token'] = _token;
+    map['reset_token'] = _resetToken;
     map['verified'] = _verified;
+    map['login_type'] = _loginType;
+    map['birthdate'] = _birthdate;
+    map['social_id'] = _socialId;
     map['status'] = _status;
-
+    map['created_at'] = _createdAt;
+    map['updated_at'] = _updatedAt;
+    map['package_id'] = _packageId;
+    map['fcm'] = _fcm;
+    map['device_id'] = _deviceId;
+    map['identity_image'] = _identityImage;
+    map['remaining_items'] = remainingItems;
+    map['profile_image'] = _profileImage;
+    map['sms_notification'] = _smsNotification;
+    map['email_notification'] = _emailNotification;
+    map['push_notification'] = _pushNotification;
+    map['firebase_auth'] = _firebaseAuth;
+    map['document_verify'] = _documentVerify;
     map['item_id'] = _itemId;
     map['item_type_id'] = _itemTypeId;
-
     return map;
   }
 }
