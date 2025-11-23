@@ -535,10 +535,11 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
         defaultValue: false),
     onChanged: (value) async {
       final driver = loginModel?.data;
+      final driver = loginModel?.data;
       if (driver != null &&
-          driver.documentVerify == 1 &&
-          driver.verified == 1 &&
-          driver.status == 1) {
+    (driver.documentVerify ?? 0) == 1 &&
+    (driver.verified ?? 0) == 1 &&
+    (driver.status ?? 0) == 1) {
         box.put("driver_status", value);
         if (value == false) {
           showDutyConfirmationDialog(
