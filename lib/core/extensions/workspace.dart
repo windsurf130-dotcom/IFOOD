@@ -199,9 +199,16 @@ getUserDataLocallyToHandleTheState(BuildContext context ,{bool? isHomePage}) asy
                 .updateItemId(vehicleAddEditTypeId: loginModel!.data!.itemId!);
           }
 
-          if (userData.verificationDocumentStatus != null) {
-            documentApprovedStatus = userData.verificationDocumentStatus;
+          // documentApprovedStatus era antes lido de uma string de status; agora a aprovação real vem dos flags inteiros do usuário
+          if (userData.documentVerify != null &&
+              userData.verified != null &&
+              userData.status != null) {
+            final isFullyApproved =
+                userData.documentVerify == 1 &&
+                userData.verified == 1 &&
+                userData.status == 1;
 
+            documentApprovedStatus = isFullyApproved ? "approved" : "";
           }
         }
         if(isHomePage==true){
@@ -210,7 +217,14 @@ getUserDataLocallyToHandleTheState(BuildContext context ,{bool? isHomePage}) asy
 
         if (box.get('gender') == true) {
           if (box.get('itemTypeId') == true) {
-            if (documentApprovedStatus == "approved") {
+            // Navegar para Home apenas se documentVerify, verified e status forem todos 1
+            final userData = loginModel?.data;
+            final isFullyApproved = userData != null &&
+                userData.documentVerify == 1 &&
+                userData.verified == 1 &&
+                userData.status == 1;
+
+            if (isFullyApproved) {
 
               Navigator.pushReplacement(
                 context,

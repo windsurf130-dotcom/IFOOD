@@ -209,9 +209,6 @@ class _DriverDocumentScreenState extends State<DriverDocumentScreen> {
     if (statusList.every((status) => status == "approved")) {
       context.read<DocumentApprovedStatusCubit>().updateDocumentApprovedStatus(docApprovedStatus: "approved");
       box.put("approved", true);
-      loginModel!.data!.itemDocumentStatus="approved";
-      UserData userObj = UserData();
-      userObj.saveLoginData("UserData", jsonEncode(loginModel!.toJson()));
     } else if (statusList.contains("rejected")) {
       context.read<DocumentApprovedStatusCubit>().updateDocumentApprovedStatus(docApprovedStatus: "rejected");
       box.put("approved", false);

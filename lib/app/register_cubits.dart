@@ -5,7 +5,7 @@ import 'package:tochegando_motoboy/data/repositories/payment_repository.dart';
 import 'package:tochegando_motoboy/data/repositories/profile_repository.dart';
 import 'package:tochegando_motoboy/data/repositories/realtime_repository.dart';
 import 'package:tochegando_motoboy/data/repositories/register_vehicle.dart';
-import 'package:ride_on_driver/data/repositories/review_repository.dart';
+import 'package:tochegando_motoboy/data/repositories/review_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 

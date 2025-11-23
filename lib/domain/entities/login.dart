@@ -58,12 +58,12 @@ class Data {
       String? otpValue,
       String? token,
       String? resetToken,
-      dynamic verified,
+      int? verified,
       dynamic loginType,
       String? birthdate,
       dynamic socialId,
       String? gender,
-      String? status,
+      int? status,
       String? createdAt,
       String? updatedAt,
       dynamic packageId,
@@ -76,7 +76,7 @@ class Data {
       dynamic emailNotification,
       dynamic pushNotification,
       dynamic firebaseAuth,
-      String? verificationDocumentStatus,
+      int? documentVerify,
       int? itemId,
       dynamic itemTypeId}) {
     _id = id;
@@ -112,7 +112,7 @@ class Data {
     _emailNotification = emailNotification;
     _pushNotification = pushNotification;
     _firebaseAuth = firebaseAuth;
-    _verificationDocumentStatus = verificationDocumentStatus;
+    _documentVerify = documentVerify;
     _itemId = itemId;
     _itemTypeId = itemTypeId;
   }
@@ -135,11 +135,11 @@ class Data {
     _otpValue = json['otp_value'];
     _token = json['token'];
     _resetToken = json['reset_token'];
-    _verified = json['verified'];
+    _verified = json['verified'] ?? 0;
     _loginType = json['login_type'];
     _birthdate = json['birthdate'];
     _socialId = json['social_id'];
-    _status = json['status'];
+    _status = json['status'] ?? 0;
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
     _packageId = json['package_id'];
@@ -154,7 +154,7 @@ class Data {
     remainingItems = json['remaining_items'];
     _pushNotification = json['push_notification'];
     _firebaseAuth = json['firebase_auth'];
-    _verificationDocumentStatus = json['verification_document_status'];
+    _documentVerify = json['document_verify'] ?? 0;
     _itemId = json['item_id'];
     _itemTypeId = json['item_type_id'];
   }
@@ -176,11 +176,11 @@ class Data {
   String? _otpValue;
   String? _token;
   String? _resetToken;
-  dynamic _verified;
+  int? _verified;
   dynamic _loginType;
   String? _birthdate;
   dynamic _socialId;
-  String? _status;
+  int? _status;
   String? _createdAt;
   String? _updatedAt;
   dynamic _packageId;
@@ -194,7 +194,7 @@ class Data {
   int? remainingItems;
   dynamic _pushNotification;
   dynamic _firebaseAuth;
-  String? _verificationDocumentStatus;
+  int? _documentVerify;
   int? _itemId;
   dynamic _itemTypeId;
 
@@ -216,11 +216,11 @@ class Data {
   String? get otpValue => _otpValue;
   String? get token => _token;
   String? get resetToken => _resetToken;
-  String? get verified => _verified;
+  int? get verified => _verified;
   dynamic get loginType => _loginType;
   String? get birthdate => _birthdate;
   dynamic get socialId => _socialId;
-  String? get status => _status;
+  int? get status => _status;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   dynamic get packageId => _packageId;
@@ -233,15 +233,11 @@ class Data {
   dynamic get pushNotification => _pushNotification;
   dynamic get firebaseAuth => _firebaseAuth;
   int? get remainingItem => _remainingItems;
-  String? get verificationDocumentStatus  => _verificationDocumentStatus;
+  int? get documentVerify => _documentVerify;
   // ignore: unnecessary_getters_setters
   int? get itemId => _itemId;
   // ignore: unnecessary_getters_setters
   dynamic get itemTypeId => _itemTypeId;
-
-  set itemDocumentStatus(String? itemDocumentStatus) =>
-      _verificationDocumentStatus = itemDocumentStatus;
-
   set itemId(int? itemId) => _itemId = itemId;
 
   set itemTypeId(dynamic itemTypeId) => _itemTypeId = itemTypeId;
@@ -344,7 +340,7 @@ class Data {
     map['email_notification'] = emailNotification;
     map['push_notification'] = pushNotification;
     map['firebase_auth'] = firebaseAuth;
-    map['verification_document_status'] = _verificationDocumentStatus;
+    map['document_verify'] = _documentVerify;
     map['item_id'] = _itemId;
     map['item_type_id'] = _itemTypeId;
     return map;

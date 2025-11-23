@@ -150,12 +150,17 @@ class _OtpScreenState extends State<OtpScreen> {
                           .read<DocumentApprovedStatusCubit>()
                           .removeDocumentApprovedStatus();
 
+                      final userData = state.loginModel.data!;
+                      final isFullyApproved =
+                          userData.documentVerify == 1 &&
+                          userData.verified == 1 &&
+                          userData.status == 1;
+
                       context
                           .read<DocumentApprovedStatusCubit>()
                           .updateDocumentApprovedStatus(
-                              docApprovedStatus: state.loginModel.data!
-                                      .verificationDocumentStatus ??
-                                  "");
+                              docApprovedStatus:
+                                  isFullyApproved ? "approved" : "pending");
 
                       context.read<AuthUserAuthenticateCubit>().resetState();
 
@@ -172,6 +177,12 @@ class _OtpScreenState extends State<OtpScreen> {
                         if (state.loginModel.data!.gender != null &&
                             state.loginModel.data!.gender!.isNotEmpty) {
                           if (state.loginModel.data!.itemTypeId != null) {
+                            final userData = state.loginModel.data!;
+                            final isFullyApproved =
+                                userData.documentVerify == 1 &&
+                                userData.verified == 1 &&
+                                userData.status == 1;
+
                             if (documentImageModel?.data
                                             ?.drivingLicenceFront?.drivingLicenceImage !=
                                         null &&
@@ -188,9 +199,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                             ?.hireServiceLicence!
                                             .hireServiceLicenceImage !=
                                         null ||
-                                state.loginModel.data!
-                                        .verificationDocumentStatus ==
-                                    "approved") {
+                                isFullyApproved) {
                               setState(() {});
                               box.put("driverId",
                                   state.loginModel.data?.fireStoreId ?? "");

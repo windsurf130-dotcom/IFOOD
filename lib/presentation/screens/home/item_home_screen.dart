@@ -529,201 +529,205 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
                             const SizedBox(),
                             const SizedBox(),
                             BlocBuilder<GetDocApprovalStatusCubit, String>(
-                                builder: (context, status) {
-                              return CustomToggleSwitch(
-                                current: box.get("driver_status",
-                                    defaultValue: false),
-                                onChanged: (value) async {
-                                  if (status == "approved") {
-                                    box.put("driver_status", value);
-                                    if (value == false) {
-                                      showDutyConfirmationDialog(
-                                        context: context,
-                                        goingOnline: value,
-                                        onConfirmed: () {
-                                          setState(() {
-                                            isOnDuty = value;
-                                          });
+    builder: (context, status) {
+  return CustomToggleSwitch(
+    current: box.get("driver_status",
+        defaultValue: false),
+    onChanged: (value) async {
+      final driver = loginModel?.data;
+      if (driver != null &&
+          driver.documentVerify == 1 &&
+          driver.verified == 1 &&
+          driver.status == 1) {
+        box.put("driver_status", value);
+        if (value == false) {
+          showDutyConfirmationDialog(
+            context: context,
+            goingOnline: value,
+            onConfirmed: () {
+              setState(() {
+                isOnDuty = value;
+              });
 
-                                          context
-                                              .read<
-                                                  UpdateDriverParameterCubit>()
-                                              .updateDriverStatus(
-                                                driverStatus: "inactive",
-                                              );
-                                          context
-                                              .read<UpdateDriverCubit>()
-                                              .updateFirebaseDriverStatus(
-                                                driverId: context
-                                                    .read<
-                                                        UpdateDriverParameterCubit>()
-                                                    .state
-                                                    .driverId,
-                                                driverStatus: "inactive",
-                                              );
-                                        },
-                                      );
-                                    } else {
-                                      if (walletBalance < -double.parse(context.read<MinimumNegativeCubit>().state.value??"20.0")) {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (context) => AlertDialog(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                            backgroundColor: Colors.white,
-                                            contentPadding: const EdgeInsets.all(24),
-                                            title: Row(
+              context
+                  .read<
+                      UpdateDriverParameterCubit>()
+                  .updateDriverStatus(
+                    driverStatus: "inactive",
+                  );
+              context
+                  .read<UpdateDriverCubit>()
+                  .updateFirebaseDriverStatus(
+                    driverId: context
+                        .read<
+                            UpdateDriverParameterCubit>()
+                        .state
+                        .driverId,
+                    driverStatus: "inactive",
+                  );
+            },
+          );
+        } else {
+          if (walletBalance < -double.parse(context.read<MinimumNegativeCubit>().state.value??"20.0")) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                backgroundColor: Colors.white,
+                contentPadding: const EdgeInsets.all(24),
+                title: Row(
 
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children:   [
-                                                Icon(Icons.account_balance_wallet_rounded, color: themeColor, size: 28),
-                                                const SizedBox(width: 10),
-                                                Expanded(
-                                                  child: Text(
-                                                    "Low Wallet Balance".translate(context),
-                                                    style: heading2Grey1(context),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            content:  Text(
-                                                "Low balance! Recharge or add money now to stay active on the platform.".translate(context),
-                                              style: regular2(context),
-                                              textAlign: TextAlign.center,
-                                            ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:   [
+                    Icon(Icons.account_balance_wallet_rounded, color: themeColor, size: 28),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "Low Wallet Balance".translate(context),
+                        style: heading2Grey1(context),
+                      ),
+                    ),
+                  ],
+                ),
+                content:  Text(
+                    "Low balance! Recharge or add money now to stay active on the platform.".translate(context),
+                  style: regular2(context),
+                  textAlign: TextAlign.center,
+                ),
 
-                                            actions: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  OutlinedButton(
-                                                    style: OutlinedButton.styleFrom(
-                                                      foregroundColor: Colors.grey[800],
-                                                      side: const BorderSide(color: Colors.grey),
-                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child:   Text("Later".translate(context),style: heading3Grey1(context).copyWith(fontWeight: FontWeight.bold,fontSize: 15),),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: themeColor,
-                                                      foregroundColor: Colors.white,
-                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      context.read<BottomBarCubit>().changeTabIndex(2);
-                                                    },
-                                                    child:   Text("Add Money".translate(context),style: heading3Grey1(context).copyWith(fontWeight: FontWeight.bold,fontSize: 15),),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                        return;
-                                      }
-                                      if (Platform.isIOS) {
-                                        bool locationOK =
-                                            await checkAndRequestAlwaysLocationPermission(
-                                                context);
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.grey[800],
+                          side: const BorderSide(color: Colors.grey),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child:   Text("Later".translate(context),style: heading3Grey1(context).copyWith(fontWeight: FontWeight.bold,fontSize: 15),),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: themeColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          context.read<BottomBarCubit>().changeTabIndex(2);
+                        },
+                        child:   Text("Add Money".translate(context),style: heading3Grey1(context).copyWith(fontWeight: FontWeight.bold,fontSize: 15),),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+            return;
+          }
+          if (Platform.isIOS) {
+            bool locationOK =
+                await checkAndRequestAlwaysLocationPermission(
+                    context);
 
-                                        if (locationOK) {
-                                          setState(() {
-                                            isOnDuty = value;
-                                          });
+            if (locationOK) {
+              setState(() {
+                isOnDuty = value;
+              });
 
-                                          context
-                                              .read<
-                                                  UpdateDriverParameterCubit>()
-                                              .updateDriverStatus(
-                                                driverStatus: "active",
-                                              );
-                                          context
-                                              .read<UpdateDriverCubit>()
-                                              .updateFirebaseDriverStatus(
-                                                driverId: context
-                                                    .read<
-                                                        UpdateDriverParameterCubit>()
-                                                    .state
-                                                    .driverId,
-                                                driverStatus: "active",
-                                              );
-                                        }
-                                      } else {
-                                        setState(() {
-                                          isOnDuty = value;
-                                        });
+              context
+                  .read<
+                      UpdateDriverParameterCubit>()
+                  .updateDriverStatus(
+                    driverStatus: "active",
+                  );
+              context
+                  .read<UpdateDriverCubit>()
+                  .updateFirebaseDriverStatus(
+                    driverId: context
+                        .read<
+                            UpdateDriverParameterCubit>()
+                        .state
+                        .driverId,
+                    driverStatus: "active",
+                  );
+            }
+          } else {
+            setState(() {
+              isOnDuty = value;
+            });
 
-                                        context
-                                            .read<UpdateDriverParameterCubit>()
-                                            .updateDriverStatus(
-                                              driverStatus: "active",
-                                            );
-                                        context
-                                            .read<UpdateDriverCubit>()
-                                            .updateFirebaseDriverStatus(
-                                              driverId: context
-                                                  .read<
-                                                      UpdateDriverParameterCubit>()
-                                                  .state
-                                                  .driverId,
-                                              driverStatus: "active",
-                                            );
-                                      }
-                                    }
-                                  } else {
-                                    // Pending verification or unknown status
-                                    showModalBottomSheet(
-                                      backgroundColor: notifires.getbgcolor,
-                                      context: context,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(20)),
-                                      ),
-                                      builder: (context) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(24.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(Icons.info_outline,
-                                                  color: Colors.orangeAccent,
-                                                  size: 50),
-                                              const SizedBox(height: 16),
-                                              Text(
-                                                "Account Verification In Progress"
-                                                    .translate(context),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium
-                                                    ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                              ),
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                "We’re currently reviewing your documents. You’ll get full access once verification is complete. Thanks for your patience!"
-                                                    .translate(context),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              const SizedBox(height: 24),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                              );
-                            }),
+            context
+                .read<UpdateDriverParameterCubit>()
+                .updateDriverStatus(
+                  driverStatus: "active",
+                );
+            context
+                .read<UpdateDriverCubit>()
+                .updateFirebaseDriverStatus(
+                  driverId: context
+                      .read<
+                          UpdateDriverParameterCubit>()
+                      .state
+                      .driverId,
+                  driverStatus: "active",
+                );
+          }
+        }
+      } else {
+        // Pending verification or unknown status
+        showModalBottomSheet(
+          backgroundColor: notifires.getbgcolor,
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20)),
+          ),
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.info_outline,
+                      color: Colors.orangeAccent,
+                      size: 50),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Account Verification In Progress"
+                        .translate(context),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          fontWeight:
+                              FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "We’re currently reviewing your documents. You’ll get full access once verification is complete. Thanks for your patience!"
+                        .translate(context),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            );
+          },
+        );
+      }
+    },
+  );
+}),
                             const SizedBox(width: 45),
                           ],
                         ),
