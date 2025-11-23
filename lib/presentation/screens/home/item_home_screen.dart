@@ -535,7 +535,6 @@ class _ItemHomeScreenState extends State<ItemHomeScreen>
         defaultValue: false),
     onChanged: (value) async {
       final driver = loginModel?.data;
-      final driver = loginModel?.data;
       if (driver != null &&
     (driver.documentVerify ?? 0) == 1 &&
     (driver.verified ?? 0) == 1 &&
